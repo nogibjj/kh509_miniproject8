@@ -19,5 +19,7 @@ jobs:
         run: make test
       - name: format
         run: make format
+      - name: run script
+        run: python polars_stat.py
       - name: deploy
         run: make deploy
