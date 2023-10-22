@@ -1,25 +1,13 @@
-iname: Clippy
+format:
+	cargo fmt --quiet
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
+lint:
+	cargo clippy --quiet
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+test:
+	cargo test --quiet
 
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          profile: minimal
-          components: clippy, rustfmt
-      - name: Format
-        run: make format
-      - name: Lint
-        run: make lint
-      - name: Test
-        run: make test
+run:
+	cargo run 
+
+all: format lint test run

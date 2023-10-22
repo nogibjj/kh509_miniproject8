@@ -1,9 +1,9 @@
 use csv::ReaderBuilder;
+use libc::{self, rusage, timeval, RUSAGE_SELF};
 use serde::Deserialize;
 use std::error::Error;
-use std::time::Instant;
 use std::mem;
-use libc::{self, RUSAGE_SELF, timeval, rusage};
+use std::time::Instant;
 
 #[derive(Debug, Deserialize)]
 pub struct IrisData {
@@ -19,7 +19,9 @@ pub struct IrisData {
     pub class: String,
 }
 pub fn read_iris_data(file_path: &str) -> Result<Vec<IrisData>, Box<dyn Error>> {
-    let mut reader = ReaderBuilder::new().has_headers(true).from_path(file_path)?;
+    let mut reader = ReaderBuilder::new()
+        .has_headers(true)
+        .from_path(file_path)?;
     let mut data = Vec::new();
     for record in reader.deserialize() {
         let record: IrisData = record?;
@@ -40,8 +42,14 @@ fn calculate_summary_stats(data: &[IrisData]) -> (f64, f64, f64, f64) {
 
     let std_dev = variance.sqrt();
 
-    let min_value = *sepal_length.iter().min_by(|x, y| x.partial_cmp(y).unwrap()).unwrap_or(&0.0);
-    let max_value = *sepal_length.iter().max_by(|x, y| x.partial_cmp(y).unwrap()).unwrap_or(&0.0);
+    let min_value = *sepal_length
+        .iter()
+        .min_by(|x, y| x.partial_cmp(y).unwrap())
+        .unwrap_or(&0.0);
+    let max_value = *sepal_length
+        .iter()
+        .max_by(|x, y| x.partial_cmp(y).unwrap())
+        .unwrap_or(&0.0);
 
     (mean, std_dev, min_value, max_value)
 }
@@ -73,8 +81,10 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let usage_end = get_resource_usage();
 
-    let user_cpu_time = timeval_to_seconds(usage_end.ru_utime) - timeval_to_seconds(usage_start.ru_utime);
-    let system_cpu_time = timeval_to_seconds(usage_end.ru_stime) - timeval_to_seconds(usage_start.ru_stime);
+    let user_cpu_time =
+        timeval_to_seconds(usage_end.ru_utime) - timeval_to_seconds(usage_start.ru_utime);
+    let system_cpu_time =
+        timeval_to_seconds(usage_end.ru_stime) - timeval_to_seconds(usage_start.ru_stime);
 
     println!("User CPU time: {:.6} seconds", user_cpu_time);
     println!("System CPU time: {:.6} seconds", system_cpu_time);
@@ -82,4 +92,3 @@ fn main() -> Result<(), Box<dyn Error>> {
     println!("Execution time: {:?}", execution_time);
     Ok(())
 }
-
