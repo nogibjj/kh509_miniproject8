@@ -249,7 +249,6 @@ dependencies = [
  "polars",
  "rand",
  "serde",
- "serde_derive",
  "structopt",
 ]
 

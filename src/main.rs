@@ -1,7 +1,6 @@
 use csv::ReaderBuilder;
 use serde::Deserialize;
 use std::error::Error;
-use plotters::prelude::*;
 
 #[derive(Debug, Deserialize)]
 pub struct IrisData {
@@ -16,7 +15,6 @@ pub struct IrisData {
     #[serde(rename = "variety")]
     pub class: String,
 }
-
 pub fn read_iris_data(file_path: &str) -> Result<Vec<IrisData>, Box<dyn Error>> {
     let mut reader = ReaderBuilder::new().has_headers(true).from_path(file_path)?;
     let mut data = Vec::new();
