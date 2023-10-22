@@ -1,25 +1,26 @@
-install:
-	pip install --upgrade pip &&\
-		pip install -r requirements.txt
+iname: Clippy
 
-test: 
-	python -m pytest -vv --cov=main test_*.py
+on:
+  push:
+    branches:
+      - main
+  pull_request:
 
-format:	
-	black *.py 
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-lint:
-	#disable comment to test speed
-	#pylint --disable=R,C --ignore-patterns=test_.*?py *.py 
-	#ruff linting is 10-100X faster than pylint
-	ruff check *.py 
-
-container-lint:
-	docker run --rm -i hadolint/hadolint < Dockerfile
-
-refactor: format lint
-
-deploy:
-	#deploy goes here
-		
-all: install lint test format #deploy
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          components: clippy, rustfmt
+          override: true
+      - name: Format
+        run: make format
+      - name: Lint
+        run: make lint
+      - name: Test
+        run: make test
