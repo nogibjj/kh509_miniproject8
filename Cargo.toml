@@ -10,6 +10,7 @@ rand = "0.8.5"
 clap = { version = "4.4", features = ["derive"] }
 lazy_static = "1.4.0"
 structopt = "0.3.25"
+polars = "0.33.2"
 [lib]
-name = "fruit"
-path = "src/lib.rs"
+name = "iris_functions"
+path = "src/polars_stat.rs"
