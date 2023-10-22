@@ -17,7 +17,6 @@ jobs:
           toolchain: stable
           profile: minimal
           components: clippy, rustfmt
-          override: true
       - name: Format
         run: make format
       - name: Lint
