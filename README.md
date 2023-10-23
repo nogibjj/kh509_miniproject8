@@ -35,7 +35,7 @@ main.rs is a statistics script that takes advantage of the polars library in *Ru
 
 # Running the project
 _______________________________
-![image](https://github.com/nogibjj/kh509_miniproject8/assets/143521756/f3327de1-67ea-450e-8e67-c76654f3430b)
+![image](https://github.com/nogibjj/kh509_miniproject8/assets/143521756/34bdf964-4a8c-441f-8713-7dc2689029ef)
 
 
 # Python vs Rust:
